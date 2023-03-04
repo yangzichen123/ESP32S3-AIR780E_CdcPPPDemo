@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "constants.proto";
+
+message CmdSendFile {
+    bytes data = 1;
+}
+
+message RespSendFile {
+
+}
+
+message CmdStartOTA {
+    uint64 file_size = 1;
+    uint64 block_size = 2;
+    string partition_name = 3;
+}
+
+message RespStartOTA {
+
+}
+
+message CmdFinishOTA {
+
+}
+
+message RespFinishOTA {
+
+}
+
+enum SendFileMsgType {
+    TypeReserved = 0;
+    TypeCmdSendFile = 1;
+    TypeRespSendFile = 2;
+    TypeCmdStartOTA = 3;
+    TypeRespStartOTA = 4;
+    TypeCmdFinishOTA = 5;
+    TypeRespFinishOTA = 6;
+}
+
+message SendFilePayload {
+    SendFileMsgType msg = 1;
+    Status status = 2;
+    oneof payload {
+    	CmdSendFile cmd_send_file = 10;
+    	RespSendFile resp_send_file = 11;
+    	CmdStartOTA cmd_start_ota = 12;
+    	RespStartOTA resp_start_ota = 13;
+    	CmdFinishOTA cmd_finish_ota = 14;
+    	RespFinishOTA resp_finish_ota = 15;
+    }
+}
