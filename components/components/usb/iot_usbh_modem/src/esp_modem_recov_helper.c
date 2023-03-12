@@ -21,7 +21,7 @@ static void retry_destroy(esp_modem_recov_resend_t *retry)
     free(retry);
 }
 
-static void pulse_special(esp_modem_recov_gpio_t * pin, int active_width_ms, int inactive_width_ms)
+static void pulse_special(esp_modem_recov_gpio_t *pin, int active_width_ms, int inactive_width_ms)
 {
     gpio_set_level(pin->gpio_num, !pin->inactive_level);
     esp_modem_wait_ms(active_width_ms);
@@ -29,7 +29,7 @@ static void pulse_special(esp_modem_recov_gpio_t * pin, int active_width_ms, int
     esp_modem_wait_ms(inactive_width_ms);
 }
 
-static void pulse(esp_modem_recov_gpio_t * pin)
+static void pulse(esp_modem_recov_gpio_t *pin)
 {
     gpio_set_level(pin->gpio_num, !pin->inactive_level);
     esp_modem_wait_ms(pin->active_width_ms);
@@ -37,39 +37,48 @@ static void pulse(esp_modem_recov_gpio_t * pin)
     esp_modem_wait_ms(pin->inactive_width_ms);
 }
 
-static esp_err_t esp_modem_retry_run(esp_modem_recov_resend_t * retry, void *param, void *result)
+static esp_err_t esp_modem_retry_run(esp_modem_recov_resend_t *retry, void *param, void *result)
 {
     esp_modem_dce_t *dce = retry->dce;
     int errors = 0;
     int timeouts = 0;
     esp_err_t err = ESP_FAIL;
     while (timeouts <= retry->retries_after_timeout &&
-           errors <= retry->retries_after_error) {
+           errors <= retry->retries_after_error)
+    {
         esp_modem_wait_ms(10);
-        if (timeouts || errors) {
+        if (timeouts || errors)
+        {
             // provide recovery action based on the defined strategy
-            if (retry->recover(retry, err, timeouts, errors) != ESP_OK) {
+            if (retry->recover(retry, err, timeouts, errors) != ESP_OK)
+            {
                 // fail the retry mechanism once the recovery fails
                 return ESP_FAIL;
             }
         }
-        if (retry->command) {
-            ESP_LOGD(TAG, "%s(%d): executing:%s...", __func__, __LINE__, retry->command );
+        if (retry->command)
+        {
+            ESP_LOGD(TAG, "%s(%d): executing:%s...", __func__, __LINE__, retry->command);
         }
 
         // Execute the command
         err = retry->orig_cmd(dce, param, result);
 
         // Check for timeout
-        if (err == ESP_ERR_TIMEOUT) {
-            if (retry->command) {
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            if (retry->command)
+            {
                 ESP_LOGW(TAG, "%s(%d): Command:%s response timeout", __func__, __LINE__, retry->command);
             }
             timeouts++;
             continue;
-        // Check for errors
-        } else if (err != ESP_OK) {
-            if (retry->command) {
+            // Check for errors
+        }
+        else if (err != ESP_OK)
+        {
+            if (retry->command)
+            {
                 ESP_LOGW(TAG, "%s(%d): Command:%s failed", __func__, __LINE__, retry->command);
             }
             errors++;
@@ -77,18 +86,18 @@ static esp_err_t esp_modem_retry_run(esp_modem_recov_resend_t * retry, void *par
         }
 
         // Success
-        if (retry->command) {
+        if (retry->command)
+        {
             ESP_LOGD(TAG, "%s(%d): Command:%s succeeded", __func__, __LINE__, retry->command);
         }
         return ESP_OK;
     }
     return err;
-
 }
 
 esp_modem_recov_resend_t *esp_modem_recov_resend_new(esp_modem_dce_t *dce, dce_command_t orig_cmd, esp_modem_retry_fn_t recover, int max_timeouts, int max_errors)
 {
-    esp_modem_recov_resend_t * retry = calloc(1, sizeof(esp_modem_recov_resend_t));
+    esp_modem_recov_resend_t *retry = calloc(1, sizeof(esp_modem_recov_resend_t));
     ESP_MODEM_ERR_CHECK(retry, "failed to allocate pin structure", err);
     retry->retries_after_error = max_errors;
     retry->retries_after_timeout = max_timeouts;
@@ -105,13 +114,13 @@ err:
 esp_modem_recov_gpio_t *esp_modem_recov_gpio_new(int gpio_num, int inactive_level, int active_width_ms, int inactive_width_ms)
 {
     gpio_config_t io_config = {
-            .pin_bit_mask = BIT64(gpio_num),
-            .mode = GPIO_MODE_OUTPUT
-    };
+        .pin_bit_mask = BIT64(gpio_num),
+        .mode = GPIO_MODE_OUTPUT};
+    ESP_LOGI(TAG, "IOnum=%d", gpio_num);
     gpio_config(&io_config);
     gpio_set_level(gpio_num, inactive_level);
 
-    esp_modem_recov_gpio_t * pin = calloc(1, sizeof(esp_modem_recov_gpio_t));
+    esp_modem_recov_gpio_t *pin = calloc(1, sizeof(esp_modem_recov_gpio_t));
     ESP_MODEM_ERR_CHECK(pin, "failed to allocate pin structure", err);
 
     pin->inactive_level = inactive_level;

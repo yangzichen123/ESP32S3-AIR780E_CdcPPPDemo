@@ -2,7 +2,7 @@ menu "IoT USB Host Modem"
 
     choice MODEM_TARGET
         prompt "Choose Modem Board"
-        default MODEM_TARGET_ML302_DNLM
+        default MODEM_TARGET_AIR780E
 
         config MODEM_TARGET_ML302_DNLM
             bool "ML302-DNLM/CNLM"
@@ -20,6 +20,8 @@ menu "IoT USB Host Modem"
             bool "BG96MA"
         config MODEM_TARGET_MC610_EU
             bool "MC610_EU"
+        config MODEM_TARGET_AIR780E
+            bool "AIR780E"
         config MODEM_TARGET_USER
             bool "User Defined"
     endchoice
@@ -28,6 +30,7 @@ menu "IoT USB Host Modem"
         string
         default "ML302-DNLM/CNLM" if MODEM_TARGET_ML302_DNLM
         default "AIR724UG-NFM" if MODEM_TARGET_AIR724UG_NFM
+        default "AIR780E" if MODEM_TARGET_AIR780E
         default "EC600NCNLA-N05" if MODEM_TARGET_EC600N_CNLA_N05
         default "EC600NCNLC-N06" if MODEM_TARGET_EC600N_CNLC_N06
         default "A7600C1" if MODEM_TARGET_A7600C1
@@ -49,6 +52,7 @@ menu "IoT USB Host Modem"
             hex "Modem USB CDC OUT endpoint address"
             default 0x01 if MODEM_TARGET_ML302_DNLM
             default 0x03 if MODEM_TARGET_AIR724UG_NFM
+            default 0x02 if MODEM_TARGET_AIR780E
             default 0x0f if MODEM_TARGET_EC600N_CNLA_N05
             default 0x0a if MODEM_TARGET_EC600N_CNLC_N06
             default 0x0a if MODEM_TARGET_A7600C1
@@ -64,6 +68,7 @@ menu "IoT USB Host Modem"
             hex "Modem USB CDC IN endpoint address"
             default 0x81 if MODEM_TARGET_ML302_DNLM
             default 0x84 if MODEM_TARGET_AIR724UG_NFM
+            default 0x84 if MODEM_TARGET_AIR780E
             default 0x86 if  MODEM_TARGET_EC600N_CNLA_N05
             default 0x81 if  MODEM_TARGET_EC600N_CNLC_N06
             default 0x81 if MODEM_TARGET_A7600C1

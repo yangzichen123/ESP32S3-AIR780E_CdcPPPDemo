@@ -2,11 +2,12 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.5)
 
-set(EXTRA_COMPONENT_DIRS $ENV{IOT_SOLUTION_PATH}/components/usb/iot_usbh
-                        $ENV{IOT_SOLUTION_PATH}/components/usb/iot_usbh_cdc
-                        $ENV{IOT_SOLUTION_PATH}/components/usb/iot_usbh_modem
-                        $ENV{IOT_SOLUTION_PATH}/components/led/led_indicator
-                        )
-include($ENV{IOT_SOLUTION_PATH}/component.cmake)
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+set(EXTRA_COMPONENT_DIRS "${EXTRA_COMPONENT_DIRS} components/components"
+"${EXTRA_COMPONENT_DIRS} components/components/usb/iot_usbh"
+"${EXTRA_COMPONENT_DIRS} components/components/usb/iot_usbh_cdc"
+"${EXTRA_COMPONENT_DIRS} components/components/usb/iot_usbh_modem"
+)
+# include($ENV{IOT_SOLUTION_PATH}/component.cmake)
+
 project(usb_cdc_4g_module)
