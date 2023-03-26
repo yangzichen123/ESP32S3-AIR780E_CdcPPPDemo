@@ -1,6 +1,6 @@
 # Linux下通过串口获取模块信息
 
-[![github](https://img.shields.io/badge/Version-V1.0.0-brightgreen.svg)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/Build-passing-brightgreen.svg)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/-Ubuntu-black?logo=Ubuntu)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/Tools-GCC&Cmake-critical.svg)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/Auther-Yangzc-orange.svg)](https://github.com/snowdreams1006) 
+[![github](https://img.shields.io/badge/Version-V1.0.0-green.svg)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/Build-passing-brightgreen.svg)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/-Ubuntu-grey?logo=Ubuntu)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/Tools-GCC&Cmake-critical.svg)](https://github.com/snowdreams1006)  [![github](https://img.shields.io/badge/Auther-Yangzc-orange.svg)](https://github.com/snowdreams1006) 
 
 本工程使用C语言编写，由Cmake构建，GCC编译，可以从模块挂载的AT串口读取模块的各种数据，支持自行添加AT指令，并且会保存读出的数据到本地。串口波特率默认为115200，数据位：8，停止位：0，奇偶校验位：0。](#技术支持与反馈)
 
@@ -63,5 +63,3 @@
 - 对于功能要求和改进，请直接提交issue。
 
 会尽快给你一个答复。
-
-
